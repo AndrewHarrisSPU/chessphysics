@@ -6,98 +6,147 @@
 	<title>Tic Tac Toe</title>
 	<style >
 		body {
-			font: 2em "courier";
+			color: #222;
+			padding: 3rem;
+			background: #fafafa;
 		}
 
-		input {
-			color: #000;
+		.flex-container {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.flex-column {
+			height: 432px;
+			width: 100%;
+			flex-direction: column;
+		}
+
+		.flex-wrap {
+			flex-wrap: wrap;
+			height: 432px;
+			width: 432px;
+		}
+
+		.square {
+			font: 6rem "arial";
+			text-align: center;
+			border: 2px solid #000;
+			height: 140px;
+			width: 140px;
+		}
+
+		.frames {
+			width: 428px;
+			font: 2rem "arial";
+			text-align: right;
+			border: 2px solid #000;
 		}
 	</style>
 </head>
 
 <body>
 
-<div id="board"></div>
+<!-- <div id="board"></div> -->
+<div class = "flex-contaier flex-column">
+	<div class = "flex-container flex-wrap" id = "board">
+		<div class = "square"></div>
+		<div class = "square"></div>
+		<div class = "square"></div>
+		<div class = "square"></div>
+		<div class = "square"></div>
+		<div class = "square"></div>
+		<div class = "square"></div>
+		<div class = "square"></div>
+		<div class = "square"></div>
+	</div>
+</div>
+<br>
+<div class = "flex-container frames" id = "frames"></div>
 
 <script>
-	// DOCUMENT ELEMENTS
-	// build a single square
-	let constructSquare = ()=> {
-		let sq = document.createElement( 'div' )
-		sq.setAttribute( 'class', 'square' )
+	// GENERATE MOVES
+	let wins = [
+		// columns
+		[ 0, 3, 6 ],
+		[ 1, 4, 7 ],
+		[ 2, 5, 8 ],
 
-		return sq
-	}
+		// rows
+		[ 0, 1, 2 ],
+		[ 3, 4, 5 ],
+		[ 6, 7, 8 ],
 
-	// build the board
-	let constructBoard = ()=> {
-		var board = document.getElementById( "board" )
-		var table = document.createElement( 'TABLE' )
-		var tbody = document.createElement( 'TBODY' )
+		// diagonals
+		[ 0, 4, 8 ],
+		[ 2, 4, 6 ]]
 
-		table.appendChild( tbody )
+	let isWon = ( board, token )=> {
+		for( win of wins ){
+			tic = board[ win[ 0 ]]
+			tac = board[ win[ 1 ]]
+			toe = board[ win[ 2 ]]
 
-		for( let row = 0; row < 3; row++ ){
-			let tr = document.createElement( 'TR' )
-			tbody.appendChild( tr )
-
-			for( let col = 0; col < 3; col++ ){
-				let td = document.createElement( 'TD' )
-				tr.appendChild( td )
-				td.appendChild( constructSquare() )
+			if( token === tic && tic === tac && tac === toe ){
+				return true
 			}
 		}
 
-		board.appendChild( table )
-	}
-
-	constructBoard()
-
-	// GENERATE BOARDS
-	let ttt = new Array( 9 ).fill( '.' )
-	let token = 'x'
-
-	// animate
-	var squares = document.querySelectorAll( '.square' )
-
-	var render = ( board )=> {
-		for( let [ i, square ] of squares.entries() ){
-			square.innerHTML = board[ i ]
-		}
+		return false
 	}
 
 	let genMoves = ( board, token, ml )=> {
 		for( let [ i, square ] of board.entries() ){
-			if( square === '.' ){
+			if( square === '&nbsp;' ){
 				let nextBoard = board.slice()
 				nextBoard[ i ] = token
+
+				if( isWon( nextBoard, token )){
+					ml.push( nextBoard )
+					return
+				}
+
+				ml.push( nextBoard )
 
 				let nextToken
 				token === 'x' ? nextToken = 'o' : nextToken = 'x'
 
 				genMoves( nextBoard, nextToken, ml )
-				ml.push( nextBoard )
 			}
 		}
+	}
+
+	// ANIMATE
+	var frames = document.getElementById( 'frames' )
+
+	var render = ( board, squares, frame, maxFrame )=> {
+		for( let [ i, square ] of squares.entries() ){
+			square.innerHTML = board[ i ]
+		}
+
+		frames.innerHTML = frame + " / " + maxFrame
 	}
 
 	let sleep = ( ms )=> {
 		return new Promise( resolve => setTimeout( resolve, ms ))
 	}
 
-	async function walk( ml ){
-		let numBoards = ml.length
-
-		for( let i = 0; i < numBoards; i++ ){
-			await sleep( 50 )
-			render( ml[ i ])
+	async function walk( ml, squares ){
+		for( let i = 0; i < ml.length; i += 1 ){
+			await sleep( 1 )
+			render( ml[ i ], squares, i, ml.length )
 		}
 	}
 
-	// Execute
+	// EXECUTE
+	let firstBoard = new Array( 9 ).fill( '&nbsp;' )
+	let token = 'x'	
 	let ml = []
-	genMoves( ttt, 'x', ml )
-	walk( ml )
+	genMoves( firstBoard, 'x', ml )
+
+	let squares = document.querySelectorAll( '.square' )	
+	walk( ml, squares )
 
 </script>
 </body>
