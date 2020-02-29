@@ -3,154 +3,31 @@
 
 <head>
 	<meta charset = "utf-8">
-	<title>Tic Tac Toe</title>
-	<style >
-		body {
-			color: #222;
-			padding: 3rem;
-			background: #fafafa;
-		}
+	<title>Chess engine physics</title>
+	<link rel = 'stylesheet' type = 'text/css' href = 'dark.css'>
+	<style>
 
-		.flex-container {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
-
-		.flex-column {
-			height: 432px;
-			width: 100%;
-			flex-direction: column;
-		}
-
-		.flex-wrap {
-			flex-wrap: wrap;
-			height: 432px;
-			width: 432px;
-		}
-
-		.square {
-			font: 6rem "arial";
-			text-align: center;
-			border: 2px solid #000;
-			height: 140px;
-			width: 140px;
-		}
-
-		.frames {
-			width: 428px;
-			font: 2rem "arial";
-			text-align: right;
-			border: 2px solid #000;
+		.inline {
+			font-size: 4rem;
+			font-weight: bold;
 		}
 	</style>
 </head>
 
 <body>
 
-<!-- <div id="board"></div> -->
-<div class = "flex-contaier flex-column">
-	<div class = "flex-container flex-wrap" id = "board">
-		<div class = "square"></div>
-		<div class = "square"></div>
-		<div class = "square"></div>
-		<div class = "square"></div>
-		<div class = "square"></div>
-		<div class = "square"></div>
-		<div class = "square"></div>
-		<div class = "square"></div>
-		<div class = "square"></div>
-	</div>
-</div>
-<br>
-<div class = "flex-container frames" id = "frames"></div>
+<header>
+	<span class = 'nav'> </span>
+	<a class = 'nav' href = "ttt.html">Next</a>
+	<span class = 'nav'> </span>
+</header>
 
-<script>
-	// GENERATE MOVES
-	let wins = [
-		// columns
-		[ 0, 3, 6 ],
-		[ 1, 4, 7 ],
-		[ 2, 5, 8 ],
+<div class = 'flex-container'><p class = 'inline'>
+	Chess engine physics
 
-		// rows
-		[ 0, 1, 2 ],
-		[ 3, 4, 5 ],
-		[ 6, 7, 8 ],
+</p></div><p>
+	This semi-empirical investigation will explore the physics of chess engines, and energy consumption in particular. It begins with a theoretical prologue, continues with experimental research on human and machine energy consumption, and concludes with an interpretation of recent innovation in the field. Machines are found to surpass humans on several measures.
 
-		// diagonals
-		[ 0, 4, 8 ],
-		[ 2, 4, 6 ]]
-
-	let isWon = ( board, token )=> {
-		for( win of wins ){
-			tic = board[ win[ 0 ]]
-			tac = board[ win[ 1 ]]
-			toe = board[ win[ 2 ]]
-
-			if( token === tic && tic === tac && tac === toe ){
-				return true
-			}
-		}
-
-		return false
-	}
-
-	let genMoves = ( board, token, ml )=> {
-		for( let [ i, square ] of board.entries() ){
-			if( square === '&nbsp;' ){
-				let nextBoard = board.slice()
-				nextBoard[ i ] = token
-
-				if( isWon( nextBoard, token )){
-					ml.push( nextBoard )
-					return
-				}
-
-				ml.push( nextBoard )
-
-				let nextToken
-				token === 'x' ? nextToken = 'o' : nextToken = 'x'
-
-				genMoves( nextBoard, nextToken, ml )
-			}
-		}
-	}
-
-	// ANIMATE
-	var frames = document.getElementById( 'frames' )
-
-	var render = ( board, squares, frame, maxFrame )=> {
-		for( let [ i, square ] of squares.entries() ){
-			square.innerHTML = board[ i ]
-		}
-
-		frames.innerHTML = frame + " / " + maxFrame
-	}
-
-	let sleep = ( ms )=> {
-		return new Promise( resolve => setTimeout( resolve, ms ))
-	}
-
-	async function walk( ml, squares ){
-		for( let i = 0; i < ml.length; i += 1 ){
-			await sleep( 1 )
-			render( ml[ i ], squares, i, ml.length )
-		}
-	}
-
-	// EXECUTE
-	let firstBoard = new Array( 9 ).fill( '&nbsp;' )
-	let token = 'x'	
-	let ml = []
-	genMoves( firstBoard, 'x', ml )
-
-	let squares = document.querySelectorAll( '.square' )	
-	walk( ml, squares )
-
-</script>
+</p>
 </body>
-
-
-
-
+</html>

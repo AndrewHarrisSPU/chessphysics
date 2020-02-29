@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+	<meta charset = "utf-8">
+	<title>Chess energy</title>
+	<link rel = 'stylesheet' type = 'text/css' href = 'light.css'>
+	<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+	</script>
+	<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+		  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+		});
+	</script>	
+</head>
+<body>
+
+<header>
+	<a class = 'nav' href = "chess1.html">Prev</a>
+	<span class = 'title'>Chess energy</span>
+	<a class = 'nav' href = "prologued.html">Next</a>
+</header>
+
+<p>
+	With an estimated average of <a href = 'https://codegolf.stackexchange.com/questions/19397/smallest-chess-board-compression'>157 bits</a> per move recorded, a minumum energy of \( 157 * 2.805 \times 10^{-21}\) \(J\) is required to record a single position.
+
+</p><p>
+	We can now calculate \(N * E_{pos}\) with:
+
+<ul><li>
+	\(N = 10^{120}\) positions
+
+</li><li>
+	\(E_{pos} = 4.40385 \times 10^{-19}\) \(J\)
+
+</li></ul><p>
+	This gives \(4.40385 \times 10^{101}\) \(J\). A <a href = 'brute.html'>brute force</a> solution for chess is computationally prohibitive, as merely recording the results of computation demands more than the mass-energy of the observable universe.
+
+</p>
+</body>
+</html>

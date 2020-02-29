@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+	<meta charset = "utf-8">
+	<title>Chess complexity</title>
+	<link rel = 'stylesheet' type = 'text/css' href = 'light.css'>
+	<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+	</script>
+	<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+		  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+		});
+	</script>	
+</head>
+<body>
+
+<header>
+	<a class = 'nav' href = "energy.html">Prev</a>
+	<span class = 'title'>Chess complexity</span>
+	<a class = 'nav' href = "chess2.html">Next</a>
+</header>
+
+</p><p>
+	To solve Chess computationally with <a hrev = 'brute.html'>brute force</a>, we would have to calculate a high amount of branching at a great amount of depth. Rather than quantifying the energy cost of solving chess, analysis will demonstrate that simply recording the brute force solution is infeasible. The energy required can be calculated with:
+
+</p><p>
+	&nbsp&nbsp&nbsp&nbsp\(N * E_{pos}\)
+
+</p><p>
+	where \(N\) is the number of positions and \(E_{pos}\) is the amount of energy to record a single move to memory.
+
+</p><p>
+	Claude Shannon was amongst the first to explore the complexity of chess in <a href = 'https://www.computerhistory.org/chess/doc-431614f453dde/'>1950</a>. He observed that a pair of moves (i.e. white's move, and black's response) has, on average, \(10^3\) possible outcomes. On average, a game of Chess will have 40 such pairs. The depth exponentiates. 'Shannon's Number' suggests \(10^{3 * 40 }\), or \(10^{120}\) positions in the full Chess game tree.
+
+</p><p>
+	Methods for storing a duplicated position once, rather than each time it arises in the game tree, arrive at lower estimates for the complete number of relvant chess positions. However, as the position has to be calculated and analyzed before it can safely be forgotten, Shannon's Number is still the bound of interest.
+
+</p>
+</body>
+</html>

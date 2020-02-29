@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+	<meta charset = "utf-8">
+	<title>AlphaZero: energy</title>
+	<link rel = 'stylesheet' type = 'text/css' href = 'light.css'>
+	<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+	</script>
+	<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+		  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+		});
+	</script>	
+</head>
+<body>
+
+<header>
+	<a class = 'nav' href = "az1.html">Prev</a>
+	<span class = 'title'>AlphaZero: energy</span>
+	<a class = 'nav' href = "index.html">Top</a>
+</header>
+
+<p>
+	We can quantify the amount of training in \({Chess}\)-\({Seconds}\). AlphaZero trained with 5,000 1st-generation tensor processing units and 64 2nd-generation tensor processing units, for 9 hours. With 40 and 250 W specifications for TPU power consumption, we can calculate:
+
+</p><p>
+	\(( 5,000 \) \( TPU_1 * 40 W ) + ( 64 \) \( TPU_2 * 250 W ) * 9 \) \( hours \)
+
+</p><p>
+	\( = 4.36 \times 10^7 \) \({Chess}\)-\({Seconds}\)
+
+</p><p>
+	\( = 1.383 \) \({Chess}\)-\({Years}\)
+
+</p><p>
+	Interestingly, after training, AlphaZero plays on only 4 TPUs and 44 CPU cores. Its clock-seconds in play should be on the same order of magnitude as its \({Chess}\)-\({Seconds}\).
+
+</p><p>
+	Chess is not nearly alone as a domain where advances in machine learning and artificial intelligence are occuring. These technologies are increasingly becoming essential tools in many diverse fields, suggesting great promise as well as peril. From universal, underlying physical principles, the \(Chess\)-\(Second\) hopefully provides a moment of clarity on this area of innovation.
+
+</p>
+</body>
+</html>	

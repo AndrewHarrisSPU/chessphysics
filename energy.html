@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+	<meta charset = "utf-8">
+	<title>Energy</title>
+	<link rel = 'stylesheet' type = 'text/css' href = 'light.css'>
+	<script type="text/javascript" async
+	  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+	</script>
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+	  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+</head>
+<body>
+
+<header>
+	<a class = 'nav' href = "complexity.html">Prev</a>
+	<span class = 'title'>Landauer's Limit</span>
+	<a class = 'nav' href = "chess1.html">Next</a>
+</header>
+
+</p><p>
+	Abruptly, let's reflect on the theoretical lower bound on the amount of energy required to 'erase a bit': \(kT\ln2\), where:
+
+</p><ul><li>
+	\(k\) is the Boltzmann constant (a fascinating physical constant in its own right)
+
+</li><li>
+	\(T\) is the temperature of the environment of the computation
+
+</li><li>
+	\(\ln 2\) is the natural logarithm of 2
+
+</li></ul><p>
+	Numerically:
+
+</p><ul>
+	<li>\(k = 1.38 \times 10^{−23}\) \(Joules/Kelvins\)</li>
+	<li>\(T = 293.15\) \(Kelvins\) (room temperature)</li>
+	<li>\(\ln 2 = 0.69315\)</li>
+
+</ul><p>
+	The Landauer limit (the minimum energy to erase a bit) is, in SI units, \( 2.805 \) \( zeptoJoules \) ( zepto: \( \times 10^{-21}\)).
+
+</p><p>
+	In theory, with some attention to binary arithmetic and optimal solutions, lower bounds can be calculated for the energy required to solve Tic-Tac-Toe, Nim, and the Towers of Hanoi.
+
+</p>
+</body>
+</html>

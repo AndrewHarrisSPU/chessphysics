@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+	<meta charset = "utf-8">
+	<title>Nim</title>
+	<link rel = 'stylesheet' type = 'text/css' href = 'dark.css'>	
+	<style >
+		.flex-wrap {
+			flex-wrap: wrap;
+			height: 100%;
+			width: 25rem;
+		}
+
+		.control {
+			font: 2rem "arial";
+			width: 23rem;
+			text-align: center;
+			color:	black;
+			background-color: #566b2e;
+			border: 2px solid #000;
+		}
+
+		.square {
+			font: 1.8rem "arial";
+			color: #131310;
+			text-align: center;
+			border: 2px solid #000;
+			height: 3rem;
+			width: 3rem;
+		}
+
+		.blank {
+			background-color: #333;
+		}
+
+		.player {
+			background-color: green;
+		}
+
+		.computer {
+			background-color: orange;
+		}
+	</style>
+</head>
+
+<body>
+
+<header>
+	<a class = 'nav' href = "ttt.html">Prev</a>
+	<span class = 'title'>Nim</span>
+	<a class = 'nav' href = "towers.html">Next</a>
+</header>
+
+<p class = "flex-container">Taking 1 to 3 squares at a time, end on the star.</p>
+
+<div class = "flex-container flex-column">
+	<div class = "flex-container flex-wrap" id = "root"></div>
+</div>
+
+<br>
+
+<div class = "flex-container" id = "control">
+</div>
+
+
+
+<script>
+	// Page logic
+	let root = document.getElementById( 'root' )
+	let squares = []
+	let colors = {
+		closed: '#272822',
+		open: '#75715E',
+		hilite: '#DBFF94',
+		player: '#96d31d',
+		computer: '#131310',
+		prize: '#66D9EF'
+	}
+
+	let head = 0
+	let tail = 3
+
+	function hilite(){
+		if( this.getAttribute( 'open' ) === 'true' ){
+			let pivot = Number( this.getAttribute( 'index' ))
+			console.log( this )
+			for( let i = head; i <= pivot; i++ ){
+				squares[ i ].style.backgroundColor = colors.hilite
+			}
+		}
+	}
+
+	function unlite(){
+		if( this.getAttribute( 'open' ) === 'true' ){
+			console.log( this )
+			let pivot = Number( this.getAttribute( 'index' ))
+			for( let i = head; i <= pivot; i++ ){
+				squares[ i ].style.backgroundColor = colors.open
+			}
+		}
+	}	
+
+	function grab(){
+		let pivot = Number( this.getAttribute( 'index' ))
+
+		console.log( head, pivot, tail )
+
+		if( this.getAttribute( 'open' ) === 'true' ){
+
+			for( let i = head; i <= pivot; i++ ){
+				setSide( squares[ i ], 'player' )
+			}
+
+			for( let i = pivot + 1; i < tail; i++ ){
+				setClosed( squares[ i ])
+			}
+
+			head = pivot + 1
+			tail = Math.min( head + 3, squares.length )
+
+			computerTurn()
+		}
+	}
+
+	let setOpen = ( square )=> {
+		square.setAttribute( 'open', true )
+		square.style.backgroundColor = colors.open
+	}
+
+	let setClosed = ( square )=> {
+		square.setAttribute( 'open', false )
+		square.style.backgroundColor = colors.closed
+	}
+
+	let setSide = ( square, side )=> {
+		console.log( "set side", square, side )
+		if( side === 'player' ){
+			square.style.backgroundColor = colors.player
+		}
+
+		if( side === 'computer' ){
+			square.style.backgroundColor = colors.computer
+		}
+
+		square.setAttribute( 'open', false )
+	}
+
+	let playerTurn = ()=> {
+		for( let i = head; i < tail; i++ ){
+			setOpen( squares[ i ])
+		}
+	}
+
+	let computerTurn = ()=> {
+		let take = 4 - ( head % 4 )
+		console.log( head, take, tail )
+
+		for( let i = 0; i < take; i++ ){
+			setSide( squares[ head + i ], 'computer' )
+			console.log( 'took: ', head + i )
+		}
+
+		head = head + take
+		tail = Math.min( head + 3, squares.length )
+
+		playerTurn()
+	}
+
+	// Build squares
+	for( let i = 0; i < 56; i++ ){
+		square = document.createElement( 'div' )
+		square.classList.add( 'square' )
+		square.setAttribute( 'index', Number( i ))
+		square.addEventListener( 'click', grab )
+		square.addEventListener( 'mouseover', hilite )
+		square.addEventListener( 'mouseout', unlite )
+
+		root.appendChild( square )
+		squares[ i ] = square
+	}
+
+	let init = ()=> {
+		head = 0
+		tail = 3
+		side = 'player'
+
+		squares.forEach( square => {
+			setClosed( square )
+		})
+
+		squares[ 55 ].style.backgroundColor = colors.prize
+		squares[ 55 ].innerHTML = '☆'
+
+		playerTurn()
+	}
+
+	let control = document.getElementById( 'control' )
+	let reset = document.createElement( 'div' )
+	reset.classList.add( 'control' )
+	reset.addEventListener( 'mouseover', ()=> {
+		reset.style.backgroundColor = '#96d31d'
+	})
+	reset.addEventListener( 'mouseout', ()=> {
+		reset.style.backgroundColor = '#566b2e'
+	})
+	reset.addEventListener( 'mouseup', init )
+	reset.innerHTML = 'reset'
+	control.appendChild( reset )
+
+	init()
+
+</script>
+
+</body>
+</html>

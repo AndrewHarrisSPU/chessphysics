@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+	<meta charset = "utf-8">
+	<title>Complexity</title>
+	<link rel = 'stylesheet' type = 'text/css' href = 'light.css'>
+	<script type="text/javascript" async
+	  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+	</script>
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+	  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+</head>
+<body>
+
+<header>
+	<a class = 'nav' href = "towers.html">Prev</a>
+	<span class = 'title'>Complexity</span>
+	<a class = 'nav' href = "energy.html">Next</a>
+</header>
+
+<p>
+	As you may have realized, none of the previous tasks were possible.
+
+</p><ul><li>
+	Tic-Tac-Toe: Although sub-optimal, <a href = 'brute.html'>brute force</a> is used to compute every branch of the game. Backwards induction (considering responses, and responses to responses, etc.) can be used to identify optimal moves. Player 2 has no winning strategy.
+
+</li><br><li>
+	Nim: The structure of the game allows an arithmetic evluation of an optimal move for the second player. If player 2 chooses squares such that the squares taken in a pair of moves adds up to 4, player 1 has no winning strategy. ( Where \( N \) is the number of squares on the board, \(\frac{N}{4}\) rounds will occur, so computing the best possible moves requires \(\frac{N}{4}\) operations.)
+
+</li><br><li>
+	Towers of Hanoi: Simple rules can be invoked to determine moves. However, these simple rules might be invoked recursively. Moving block 'a' is trivial. Moving blocks 'a' and 'b' to the third peg means moving block 'a' to the second peg, block 'b' to the third peg, and block 'a' from the second peg to the third peg. Moving blocks 'a', 'b', and 'c' requires moving the two smaller blocks twice (six total moves), and the larger block once. In general, moving \(N\) blocks requres \(2^{n - 1}\) moves. With 9 blocks, 511 moves are requried.
+
+</li></ul>
+</body>
+</html>

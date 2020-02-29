@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang = "en">
+
+<head>
+	<meta charset = "utf-8">
+	<title>Tic Tac Toe</title>
+	<link rel = 'stylesheet' type = 'text/css' href = 'dark.css'>
+	<style >
+		.flex-wrap {
+			flex-wrap: wrap;
+			height: 100%;
+			width: 25rem;
+		}
+
+		.square {
+			font: 6rem "arial";
+			text-align: center;
+			border: 2px solid #000;
+			height: 8rem;
+			width: 8rem;
+		}
+
+		.control {
+			font: 2rem "arial";
+			width: 25rem;
+			text-align: center;
+			color:	black;
+			background-color: #566b2e;
+			border: 2px solid #000;
+		}
+	</style>
+</head>
+
+<body>
+
+<header>
+	<a class = 'nav' href = "index.html">Prev</a>
+	<span class = 'title'>Tic-Tac-Toe</span>
+	<a class = 'nav' href = "nim.html">Next</a>
+</header>
+
+<p class = "flex-container">Win at tic-tac-toe.</p>
+
+<div class = "flex-container flex-column">
+	<div class = "flex-container flex-wrap" id = "root"></div>
+</div>
+
+<br>
+<div class = "flex-container" id = "control"></div>
+
+
+<script>
+	let root = document.getElementById( 'root' )
+	let squares = []
+	let board = []
+
+	for( let i = 0; i < 9; i++ ){
+		square = document.createElement( 'div' )
+		square.classList.add( 'square' )
+		square.setAttribute( 'index', Number( i ))
+		square.setAttribute( 'open', false )
+
+		square.addEventListener( 'mouseover', hilite )
+		square.addEventListener( 'mouseout', unlite )
+		square.addEventListener( 'mouseup', mark )
+
+		root.appendChild( square )
+		squares[ i ] = square
+	}
+
+	// callbacks
+	function hilite(){
+		if( this.getAttribute( 'open' ) === 'true' ){
+			this.style.backgroundColor = '#75715E'
+		}
+	}
+
+	function unlite(){
+		if( this.getAttribute( 'open' ) === 'true' ){
+			this.style.backgroundColor = '#272822'
+		}
+	}
+
+	function mark(){
+		if( this.getAttribute( 'open' ) === 'true' ){
+			for( square of squares ){
+				square.setAttribute( 'open', false )
+			}
+
+			i = Number( this.getAttribute( 'index' ))
+			board[ i ] = 'o'
+			this.innerHTML = 'o'
+			this.style.color = '#66D9EF'
+			this.style.backgroundColor = '#272822'
+		
+			if( isWon( 'o' )){
+				renderWin( 'o' )
+			}
+
+			if( !isWon( 'o' )){
+			computerMove()
+			}
+		}
+ 	}
+
+	// win conditions
+	let wins = [
+		// columns
+		[ 0, 3, 6 ],
+		[ 1, 4, 7 ],
+		[ 2, 5, 8 ],
+
+		// rows
+		[ 0, 1, 2 ],
+		[ 3, 4, 5 ],
+		[ 6, 7, 8 ],
+
+		// diagonals
+		[ 0, 4, 8 ],
+		[ 2, 4, 6 ]]
+
+
+ 	let renderWin = ( token )=> {
+ 		for( square of squares ){
+ 			square.setAttribute( 'open', false )
+			square.style.backgroundColor = '#272822'
+ 		}
+
+ 		for( win of wins ){
+ 			let tic = win[ 0 ]
+ 			let tac = win[ 1 ]
+ 			let toe = win[ 2 ]
+
+ 			if( board[ tic ] === token
+ 			&&	board[ tac ] === token
+ 			&&	board[ toe ] === token ){
+ 				squares[ tic ].style.backgroundColor = '#75715E'
+ 				squares[ tac ].style.backgroundColor = '#75715E'
+ 				squares[ toe ].style.backgroundColor = '#75715E'
+ 			}
+
+
+ 		}
+ 	}
+
+	let isWon = ( token )=> {
+		for( win of wins ){
+			tic = board[ win[ 0 ]]
+			tac = board[ win[ 1 ]]
+			toe = board[ win[ 2 ]]
+
+			if( tic === token
+			&&	tac === token
+			&& 	toe === token ){
+				return true
+			}
+		}
+
+		return false
+	}
+
+	let isFull = ()=> {
+		let full = true
+
+		for( token of board ){
+			if( token === '-' ){
+				full = false
+			}
+		}
+
+		return full
+	}
+
+	// AI
+	let genMoves = ( token )=> {
+		let ml = []
+
+		// for each board character
+		for( let i = 0; i < 9; i++ ){
+			// if this character is empty
+			if( board[ i ] === '-' ){
+				ml.push( i )
+			}
+		}
+
+		return ml
+	}
+
+	let eval = ( token )=> {
+		// if winEval is true, someone won
+		if( isWon( token )){
+			return 1
+		}
+
+		if( isFull() ){
+			return 0
+		}
+
+		// deeper searching
+		// setup
+		let opponent = '-'
+		token === 'x' ? opponent = 'o' : opponent = 'x'
+
+		let best = 100
+
+		let ml = genMoves( opponent )
+
+		for( let i = 0; i < ml.length; i++ ){
+			board[ ml[ i ]] = opponent
+			let score = -eval( opponent )
+
+			if( score < best ){
+				best = score
+			}
+			board[ ml[ i ]] = '-'
+		}
+
+		return best
+	}
+ 
+	let search = ()=> {
+		let bestScore = -100
+
+		let ml = genMoves( 'x' )
+		let bestMove = -1
+
+		for( let i = 0; i < ml.length; i++ ){
+			board[ ml[ i ]] = 'x'
+			let score = eval( 'x' )
+
+			if( score >= bestScore ){
+				bestMove = ml[ i ]
+				bestScore = score
+			}
+			board[ ml[ i ]] = '-'
+		}
+
+		return bestMove
+	}
+
+	let computerMove = ()=> {
+		let best = search( 'x' )
+
+		board[ best ] = 'x'
+
+		squares[ best ].style.color = '#F92672'
+		squares[ best ].innerHTML = 'x'
+
+		if( isWon( 'x' )){
+			renderWin( 'x' )
+		}
+
+		if( !isWon( 'x' )){
+			playerMove()
+		}
+	}
+
+	let playerMove = ()=> {
+		for( let [ i, square ] of squares.entries() ){
+			if( board[ i ] === '-' ){
+				square.setAttribute( 'open', true )
+			}
+		}
+	}
+
+	let init = ()=> {
+		for( square of squares ){
+			square.setAttribute( 'open', false )
+			square.style.borderColor = '#000'
+			square.style.backgroundColor = '#272822'
+			square.innerHTML = ''
+		}
+
+		board = [ '-', '-', '-', '-', '-', '-', '-', '-', '-' ]
+
+		console.log( "init" )
+
+		computerMove()
+	}
+
+	let control = document.getElementById( 'control' )
+	let reset = document.createElement( 'div' )
+	reset.classList.add( 'control' )
+	reset.addEventListener( 'mouseover', ()=> {
+		reset.style.backgroundColor = '#96d31d'
+	})
+	reset.addEventListener( 'mouseout', ()=> {
+		reset.style.backgroundColor = '#566b2e'
+	})
+	reset.addEventListener( 'mouseup', init )
+	reset.innerHTML = 'reset'
+	control.appendChild( reset )
+
+	init()
+
+</script>
+</body>
+</html>
+
+

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+	<meta charset = "utf-8">
+	<title>TSCP: notes</title>
+	<link rel = 'stylesheet' type = 'text/css' href = 'light.css'>
+	<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+	</script>
+	<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+		  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+		});
+	</script>	
+</head>
+<body>
+
+<header>
+	<a class = 'nav' href = "tscpperf3.html">Prev</a>
+	<span class = 'title'>TSCP: notes</span>
+	<a class = 'nav' href = "az1.html">Next</a>
+</header>
+
+<p>
+	TSCP performance essentially benchmarks the hardware platform it runs on. Experimental data was generated on an unexceptional machine powered by an Intel m3 processor. Other hardware (or engines, for that matter) would vary substantially on the same inputs. This observation qualifies the results, but the overall direction and magnitude suggest a fairly clean answer to the research question.
+
+</p><p>
+	While not the most powerful engine, TSCP is tractable to modify. Two modified versions ran the suite of tested positions. One was unable to arithmetically evaluate any position but checkmate. Another was unable to navigate game trees efficiently with alpha-beta pruning. Given equal clock-time (seconds, not \(Chess\)-\(Seconds\)) as Nakamura, they had failure rates of 46% and 42%, respectively. Increasing think time to as much as one hour per position revealed that some positions were not practically solvable by these compromised engines.
+
+</p><p>
+	This primes some final exploration of the topic of chess computing. Much of what makes TSCP performant - a particular, well-tuned combination of evaluation functions and optimized tree exploration routines - is the product of human intellect and design. Recent innovations, however, have demonstrated that more powerful engines can result from machine learning.
+
+</p>
+</body>
+</html>	

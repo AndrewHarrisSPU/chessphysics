@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+	<meta charset = "utf-8">
+	<title>Brute force</title>
+	<link rel = 'stylesheet' type = 'text/css' href = 'dark.css'>	
+	<style >
+		.flex-wrap {
+			flex-wrap: wrap;
+			height: 100%;
+			width: 25rem;
+		}
+
+		.square {
+			font: 6rem "arial";
+			text-align: center;
+			border: 2px solid #000;
+			height: 8rem;
+			width: 8rem;
+		}
+
+		.control {
+			font: 2rem "arial";
+			width: 25rem;
+			text-align: center;
+			color:	black;
+			background-color: #75715E;
+			border: 2px solid #000;
+		}
+	</style>
+</head>
+
+<body>
+<header>
+	<a class = 'nav' href = "complexity.html">Prev</a>
+	<span class = 'title'>Brute force</span>
+	<span class = 'nav'>--</span>
+</header>
+
+<br>
+
+<div class = "flex-container flex-column">
+	<div class = "flex-container flex-wrap" id = "board">
+		<div class = "square"></div>
+		<div class = "square"></div>
+		<div class = "square"></div>
+		<div class = "square"></div>
+		<div class = "square"></div>
+		<div class = "square"></div>
+		<div class = "square"></div>
+		<div class = "square"></div>
+		<div class = "square"></div>
+	</div>
+</div>
+<br>
+<div class = "flex-container" id = "control"></div>
+
+<script>
+	// GENERATE MOVES
+	let wins = [
+		// columns
+		[ 0, 3, 6 ],
+		[ 1, 4, 7 ],
+		[ 2, 5, 8 ],
+
+		// rows
+		[ 0, 1, 2 ],
+		[ 3, 4, 5 ],
+		[ 6, 7, 8 ],
+
+		// diagonals
+		[ 0, 4, 8 ],
+		[ 2, 4, 6 ]]
+
+	let isWon = ( board, token )=> {
+		for( win of wins ){
+			tic = board[ win[ 0 ]]
+			tac = board[ win[ 1 ]]
+			toe = board[ win[ 2 ]]
+
+			if( token === tic && tic === tac && tac === toe ){
+				return true
+			}
+		}
+
+		return false
+	}
+
+	let genMoves = ( board, token, ml )=> {
+		for( let [ i, square ] of board.entries() ){
+			if( square === '&nbsp;' ){
+				let nextBoard = board.slice()
+				nextBoard[ i ] = token
+
+				if( isWon( nextBoard, token )){
+					ml.push( nextBoard )
+					return
+				}
+
+				ml.push( nextBoard )
+
+				let nextToken
+				token === 'x' ? nextToken = 'o' : nextToken = 'x'
+
+				genMoves( nextBoard, nextToken, ml )
+			}
+		}
+	}
+
+	// ANIMATE
+	let control = document.getElementById( 'control' )
+	let nodeCounter = document.createElement( 'div' )
+	nodeCounter.classList.add( 'control' )
+	control.appendChild( nodeCounter )
+
+	var render = ( board, squares, frame, maxFrame )=> {
+		for( let [ i, square ] of squares.entries() ){
+			if( board[ i ] === 'x' ){
+				square.innerHTML = '<span style=\"color: #F92672;\"">x</span>'
+			}
+			if( board[ i ] === 'o' ){
+				square.innerHTML = '<span style=\"color: #66D9EF;\"">o</span>'
+			}
+		}
+
+		nodeCounter.innerHTML = frame + " / " + maxFrame
+	}
+
+	let sleep = ( ms )=> {
+		return new Promise( resolve => setTimeout( resolve, ms ))
+	}
+
+	async function walk( ml, squares ){
+		for( let i = 0; i < ml.length; i += 1 ){
+			await sleep( 1 )
+			render( ml[ i ], squares, i, ml.length )
+		}
+	}
+
+	// EXECUTE
+	let firstBoard = new Array( 9 ).fill( '&nbsp;' )
+	let token = 'x'	
+	let ml = []
+	genMoves( firstBoard, 'x', ml )
+
+	let squares = document.querySelectorAll( '.square' )	
+	walk( ml, squares )
+
+</script>
+</body>
+</html>
+
+
+
+

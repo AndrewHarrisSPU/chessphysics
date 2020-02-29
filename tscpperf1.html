@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+	<meta charset = "utf-8">
+	<title>TSCP: timing</title>
+	<link rel = 'stylesheet' type = 'text/css' href = 'light.css'>
+	<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+	</script>
+	<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+		  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+		});
+	</script>	
+</head>
+<body>
+
+<header>
+	<a class = 'nav' href = "nakamura2.html">Prev</a>
+	<span class = 'title'>TSCP: timing</span>
+	<a class = 'nav' href = "tscpperf2.html">Next</a>
+</header>
+
+</p><p>
+	A comparison of Nakamura's performance can be made with <a href = 'http://www.tckerrigan.com/Chess/TSCP/'>Tom's Simple Chess Program</a> ('TSCP')
+
+<ul><li>
+	A rush routine was created to give the 52 positions from Nakamura's rush to the TSCP engine, which was then instructed to compute the first move.
+
+</li><br><li>
+	A 'think time' parameter was gradually increased until all first moves matched Nakamura's.
+
+</li><br><li>
+	Move cacheing and opening books were disabled to ensure TSCP was unable to simply look up any solutions.
+
+</li><br><li>
+	The rush routine was modified to calculate a single position 30 times, and results averaged to obtain a consistent measure of time to solve a position. Formulaically, \(t_{avg} = \sum_{p=1}^{52} \sum_{t=1}^{30} \frac{t_{p}}{30}\)
+
+</li></ul><p>
+	A mean duration of \( 14.7179 \) \( s \) was observed on the test apparatus when correctly solving the sequence of 52 positions in Nakamura's rush.
+	
+</p>
+</body>
+</html>	

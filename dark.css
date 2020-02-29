@@ -1,0 +1,53 @@
+body {
+	font-family: Helvetica, sans-serif;			
+	font-size: 1.2rem;
+	line-height: 2rem;			
+	color: #F8F8F2;
+	padding: 3rem;
+	background: #272822;
+}
+
+a {
+	color: #DBFF94;
+}
+
+.title {
+	width: 18rem;
+	font-size: 2rem;
+	font-weight: bold;
+}
+
+.flex-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.flex-column {
+	height: 100%;
+	width: 100%;
+	flex-direction: column;
+}
+
+.nav {
+	width: 10rem;
+	text-align: center;
+}
+
+.nav a {
+	color: #DBFF94;
+}
+
+header {
+	margin: 0 auto;
+	text-align: center;
+	width: 35rem;
+	height: 100%
+	padding: 3rem;
+	font: 1.6rem;
+    display: flex;
+    justify-content: center;
+    color: #F8F8F2;
+    background-color: #4c4d42;
+	border: 2px solid #000;
+}

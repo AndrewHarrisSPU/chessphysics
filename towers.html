@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang = "en">
+
+<head>
+	<meta charset = "utf-8">
+	<title>Towers of Hanoi</title>
+	<link rel = 'stylesheet' type = 'text/css' href = 'dark.css'>	
+	<style >
+		.flex-column {
+			height: 100%;
+			width: 220px;
+			flex-direction: column;
+			border: 2px dotted #272822;
+		}
+
+		.peg {
+			margin-left: 104px;
+			border: 2px solid #000;
+			background-color: #000;
+			height: 30px;
+			width: 12px;
+		}
+
+		.block {
+			font-size: .9rem;
+			color: #000;
+			text-align: center;
+			background-color: #474439;
+			border: 2px solid #000;			
+			height: 30px;
+		}
+
+		.a {
+			margin-left: 90px;
+			width: 40px;
+		}
+
+		.b {
+			margin-left: 80px;
+			width: 60px;
+		}
+
+		.c {
+			margin-left: 70px;
+			width: 80px;
+		}
+
+		.d {
+			margin-left: 60px;
+			width: 100px;
+		}
+
+		.e {
+			margin-left: 50px;
+			width: 120px;
+		}
+
+		.f {
+			margin-left: 40px;
+			width: 140px;
+		}
+
+		.g {
+			margin-left: 30px;
+			width: 160px;
+		}
+
+		.h {
+			margin-left: 20px;
+			width: 180px;
+		}
+
+		.i {
+			margin-left: 10px;
+			width: 200px;
+		}
+
+		.bottom {
+			height: 10px;
+			width: 220px;
+			background-color: #000;
+		}
+
+		.control {
+			font: 2rem "arial";
+			width: 30rem;
+			text-align: center;
+			color:	black;
+			background-color: #75715E;
+			border: 2px solid #000;
+		}
+	</style>
+</head>
+<body>
+
+<header>
+	<a class = 'nav' href = "nim.html">Prev</a>
+	<span class = 'title'>Towers of Hanoi</span>
+	<a class = 'nav' href = "complexity.html">Next</a>
+</header>
+
+<p class = "flex-container">Move all the blocks to the 3rd peg with 500 or fewer moves.</p>
+
+
+<div class = "flex-container">
+	<div class = "flex-column" id = "peg0">
+		<div class = "peg"></div>
+	</div>
+	<div class = "flex-column" id = "peg1">
+		<div class = "peg"></div>
+		<div class = "peg"></div>
+		<div class = "peg"></div>
+		<div class = "peg"></div>
+		<div class = "peg"></div>
+		<div class = "peg"></div>
+		<div class = "peg"></div>
+		<div class = "peg"></div>
+		<div class = "peg"></div>
+		<div class = "peg"></div>
+	</div>
+	<div class = "flex-column" id = "peg2">
+		<div class = "peg"></div>
+		<div class = "peg"></div>
+		<div class = "peg"></div>
+		<div class = "peg"></div>
+		<div class = "peg"></div>
+		<div class = "peg"></div>
+		<div class = "peg"></div>
+		<div class = "peg"></div>
+		<div class = "peg"></div>
+		<div class = "peg"></div>
+	</div>
+</div>
+<br>
+
+<div class = "flex-container">
+	<div class = "control" id = "counter"></div>
+</div>
+
+<script>
+	let topBlocks = []
+	let peg0 = document.getElementById( 'peg0' )
+	let peg1 = document.getElementById( 'peg1' )
+	let peg2 = document.getElementById( 'peg2' )
+	let pegs = [ peg0, peg1, peg2 ]
+	let blocks = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i' ]
+	let moves = 0
+	let counter = document.getElementById( 'counter' )
+	counter.innerHTML = moves + " / 500"
+
+	let fromPeg = undefined
+	let toPeg = undefined
+	let grabbed = undefined
+
+	let move = ( from, to )=> {
+		if( from === to ){
+			setStateGrab()
+			return
+		}
+		// swap the lowest 'peg' div with the block
+
+		let blockIndex = 0
+		let pegIndex = -1
+
+		// locate index of block
+		for( i in from.children ){
+			// if it's a 'peg'
+			if( from.children[ i ].className === 'peg' ){
+				blockIndex++
+			}
+		}
+
+		// locate index of peg
+		for( i in to.children ){
+			if( to.children[ i ].className === 'peg' ){
+				pegIndex++
+			}
+		}
+
+		// check for block-too-big on to peg
+		console.log( 'size check: ', to.children[ pegIndex + 1 ])
+		if( to.children[ pegIndex + 1 ].classList.contains( 'block' )){
+			console.log( from.children[ blockIndex ].getAttribute( 'size' ))
+			console.log( to.children[ pegIndex + 1 ].getAttribute( 'size' ))
+
+			console.log( 'oops p1' )
+			if( from.children[ blockIndex ].getAttribute( 'size' ) >= to.children[ pegIndex + 1 ].getAttribute( 'size' )){
+				console.log( 'oops p2' )
+				return
+			}
+		}
+
+		console.log( blockIndex, pegIndex )
+
+		// swapping
+		let block = from.children[ blockIndex ]
+		let peg = to.children[ pegIndex ]
+		let toNext = peg.nextElementSibling
+		block.replaceWith( peg )
+		to.insertBefore( block, toNext )
+
+		// move counter
+		moves++
+		counter.innerHTML = moves + " / 500"
+	}
+
+	function hilite(){
+		if( this.getAttribute( 'active' ) === 'true' ){
+			if( this != grabbed ){
+				this.style.backgroundColor = '#DBFF94'
+			}
+		}
+	}
+
+	function unlite(){
+		if( this.getAttribute( 'active' ) === 'true' ){
+			if( this != grabbed ){
+				this.style.backgroundColor = '#75715E'
+			}
+		}
+	}
+
+	function hilitePeg(){
+		if( this.getAttribute( 'active' ) === 'true' ){
+			this.style.borderColor = '#DBFF94'
+		}
+	}
+
+	function unlitePeg(){
+		if( this.getAttribute( 'active' ) === 'true' ){
+			this.style.borderColor = '#272822'
+		}
+	}
+
+	function grab( ev ){
+		if( this.getAttribute( 'active' ) === 'true' ){
+			ev.stopPropagation()
+
+			if( moves >= 500 ){
+				return
+			}
+
+			fromPeg = this.parentElement
+
+			grabbed = this
+
+			this.setAttribute( 'active', false )
+			this.style.backgroundColor = '#96d31d'
+
+			setStateDrop()
+		}		
+	}
+
+	function drop( ev ){
+		if( this.getAttribute( 'active' ) === 'true' ){
+			ev.stopPropagation()
+
+			toPeg = this
+
+			move( fromPeg, toPeg )
+
+			grabbed = undefined
+
+			setStateGrab()
+		}
+	}
+
+	for( i of blocks ){
+		block = document.createElement( 'div' )
+		block.classList.add( 'block' )
+		block.classList.add( i )
+		block.setAttribute( 'size', i )
+		block.innerHTML = i
+		block.addEventListener( 'mouseover', hilite )
+		block.addEventListener( 'mouseout', unlite )
+		block.addEventListener( 'mouseup', grab )
+
+		peg0.appendChild( block )
+	}
+
+	for( peg of pegs ){
+		bottom = document.createElement( 'div' )
+		bottom.classList.add( 'bottom' )
+		peg.appendChild( bottom )
+		peg.setAttribute( 'active', false )
+		peg.addEventListener( 'mouseover', hilitePeg )
+		peg.addEventListener( 'mouseout', unlitePeg )
+		peg.addEventListener( 'mouseup', drop )
+	}
+
+	// get block at top of each peg
+	let getTopBlocks = ()=> {
+		topBlocks = [ undefined, undefined, undefined ]
+
+		for( el of peg0.children ){
+			if( el.className != 'peg' && el.className != 'bottom' ){
+				topBlocks[ 0 ] = el
+				if( el != grabbed ) el.style.backgroundColor = '#75715E'
+				break
+			}
+		}
+
+		for( el of peg1.children ){
+			if( el.className != 'peg' && el.className != 'bottom' ){
+				topBlocks[ 1 ] = el
+				if( el != grabbed ) el.style.backgroundColor = '#75715E'
+				break
+			}
+		}
+
+		for( el of peg2.children ){
+			if( el.className != 'peg' && el.className != 'bottom' ){
+				topBlocks[ 2 ] = el
+				if( el != grabbed ) el.style.backgroundColor = '#75715E'
+				break
+			}
+		}
+	}
+
+	let setStateDrop = ()=> {
+		getTopBlocks()
+		for( block of topBlocks ){
+			if( block != undefined ){
+				block.setAttribute( 'active', false )
+				block.style.pointerEvents = 'none'
+				if( block != grabbed ){
+					block.style.backgroundColor = '#474439'
+				}
+
+				if( block === grabbed ){
+					block.style.backgroundColor = '96d31d'
+				}
+			}
+		}
+
+		for( peg of pegs ){
+			peg.setAttribute( 'active', true )
+			peg.style.pointerEvents = 'auto'
+		}
+	}
+
+	let setStateGrab = ()=> {
+		getTopBlocks()
+		for( block of topBlocks ){
+			if( block != undefined ){
+				block.setAttribute( 'active', true )
+				block.style.pointerEvents = 'auto'
+			}
+		}
+
+		for( peg of pegs ){
+			peg.setAttribute( 'active', false )
+			peg.style.pointerEvents = 'none'
+			peg.style.borderColor = '#272822'
+		}
+	}
+
+	setStateGrab()
+</script>
+
+</body>
+</html>
