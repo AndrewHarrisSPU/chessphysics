@@ -24,10 +24,10 @@
 	A comparison of Nakamura's performance can be made with <a href = 'http://www.tckerrigan.com/Chess/TSCP/'>Tom's Simple Chess Program</a> ('TSCP')
 
 <ul><li>
-	A rush routine was created to give the 52 positions from Nakamura's rush to the TSCP engine, which was then instructed to compute the first move.
+	A routine was created to feed the 52 positions from Nakamura's rush to the TSCP engine. The engine was instructed to compute an optimal first move for each.
 
 </li><br><li>
-	A 'think time' parameter was gradually increased until all first moves matched Nakamura's.
+	A 'think time' parameter was gradually increased until all first moves matched Nakamura's. (A better experimental protocol would ask for the entire principal variation table, but cursory investigation suggests correct first moves imply correct solutions.)
 
 </li><br><li>
 	Move cacheing and opening books were disabled to ensure TSCP was unable to simply look up any solutions.
